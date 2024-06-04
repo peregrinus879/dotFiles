@@ -77,7 +77,7 @@ alias .....='cd ../../../..'
 # Listing
 alias ls='ls --color=auto --group-directories-first'
 alias la='ls -a'
-alias ll='ls -la'
+alias ll='ls -al'
 # Grepping
 alias grep='grep --color=auto'
 # Safety
