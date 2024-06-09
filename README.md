@@ -1,5 +1,5 @@
 # archinstall
-// courtesy of: www.youtube.com/@Ja.KooLit
+// pre-installation reference: www.youtube.com/@Ja.KooLit
 
 $ lsblk
 
@@ -40,12 +40,14 @@ $ btrfs su cr /mnt/@log
 $ btrfs su cr /mnt/@snapshots
 $ umount /mnt
 
+$ mkdir -p /mnt/archinstall
+$ mount -o subvol=@ /dev/nvme0n1p3 /dev/archinstall
+
 $ mkdir -p /mnt/archinstall/home
 $ mkdir -p /mnt/archinstall/var/cache/pacman/pkg
 $ mkdir -p /mnt/archinstall/var/log
 $ mkdir -p /mnt/archinstall/.snapshots
 
-$ mount -o subvol=@ /dev/nvme0n1p3 /dev/archinstall
 $ mount -o subvol=@home /dev/nvme0n1p3 /dev/archinstall/home
 $ mount -o subvol=@pkg /dev/nvme0n1p3 /dev/archinstall/var/cache/pacman/pkg
 $ mount -o subvol=@log /dev/nvme0n1p3 /dev/archinstall/var/log
@@ -58,3 +60,19 @@ $ swapon /dev/nvme0n1p2
 $ lsblk
 
 $ archinstall
+
+$ sudo pacman -Syu
+
+$ sudo pacman -S firefox firewalld gimp git hypridle hyprlock hyprpaper neovim sbctl stow transmission-cli transmission-qt tree unzip waybar
+
+$ sudo pacman -S bridge-utils dnsmasq iptables-nft qemu-base swtpm virt-manager virt-viewer
+
+$ sudo pacman -S --needed base-devel && git clone https://aur.archlinux.org/paru.git && cd paru && makepkg -si
+
+$ paru -Syu
+
+$ paru -S appimagelauncher brave-bin
+
+$ git clone https://github.com/nvim-lua/kickstart.nvim.git "${XDG_CONFIG_HOME:-$HOME/.config}"/nvim
+
+$ git@github.com:peregrinus879/dotFiles.git
