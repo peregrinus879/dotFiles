@@ -13,7 +13,7 @@ $  Y
 $ n
 $  <default>
 $  <default>
-$  +32768M
+$  +24576M
 $  Y
 $ n
 $  <default>
@@ -29,32 +29,49 @@ $  82
 $ w
 
 $ mkfs.vfat -F 32 /dev/nvme0n1p1
+
 $ mkswap /dev/nvme0n1p2
+
 $ mkfs.btrfs /dev/nvme0n1p3
 
 $ mount /dev/nvme0n1p3 /mnt
+
 $ btrfs su cr /mnt/@
+
 $ btrfs su cr /mnt/@home
+
 $ btrfs su cr /mnt/@pkg
+
 $ btrfs su cr /mnt/@log
+
 $ btrfs su cr /mnt/@snapshots
+
 $ umount /mnt
 
 $ mkdir -p /mnt/archinstall
+
 $ mount -o subvol=@ /dev/nvme0n1p3 /dev/archinstall
 
 $ mkdir -p /mnt/archinstall/home
+
 $ mkdir -p /mnt/archinstall/var/cache/pacman/pkg
+
 $ mkdir -p /mnt/archinstall/var/log
+
 $ mkdir -p /mnt/archinstall/.snapshots
 
 $ mount -o subvol=@home /dev/nvme0n1p3 /dev/archinstall/home
+
 $ mount -o subvol=@pkg /dev/nvme0n1p3 /dev/archinstall/var/cache/pacman/pkg
+
 $ mount -o subvol=@log /dev/nvme0n1p3 /dev/archinstall/var/log
+
 $ mount -o subvol=@snapshots /dev/nvme0n1p3 /dev/archinstall/.snapshots
 
 $ mkdir -p /mnt/archinstall/boot
+
 $ mount /dev/nvme0n1p1 /mnt/archinstall/boot
+
 $ swapon /dev/nvme0n1p2
 
 $ lsblk
