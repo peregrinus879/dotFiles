@@ -1,4 +1,5 @@
 # archinstall
+// courtesy of: www.youtube.com/@Ja.KooLit
 
 $ lsblk
 
