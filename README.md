@@ -1,38 +1,31 @@
 # archinstall
-// pre-installation reference: www.youtube.com/@Ja.KooLit
 
 $ lsblk
 
-$ fdisk /dev/nvme0n1
-$ g
+$ gdisk /dev/nvme0n1
+$ o
 $ n
 $  <default>
 $  <default>
 $  +2048M
-$  Y
+$  ef00
 $ n
 $  <default>
 $  <default>
-$  +24576M
-$  Y
+$  +1024G
+$  0700
 $ n
 $  <default>
 $  <default>
 $  <default>
-$  Y
-$ t
-$  1
-$  1
-$ t
-$  2
-$  82
+$  <default>
 $ w
 
-$ mkfs.vfat -F 32 /dev/nvme0n1p1
+$ mkfs.fat -F32 -n EFI /dev/nvme0n1p1
 
-$ mkswap /dev/nvme0n1p2
+$ mkfs.ntfs -L WIN /dev/nvme0n1p2
 
-$ mkfs.btrfs /dev/nvme0n1p3
+$ mkfs.btrfs -L ARC /dev/nvme0n1p3
 
 $ mount /dev/nvme0n1p3 /mnt
 
@@ -40,39 +33,27 @@ $ btrfs su cr /mnt/@
 
 $ btrfs su cr /mnt/@home
 
-$ btrfs su cr /mnt/@pkg
-
-$ btrfs su cr /mnt/@log
-
 $ btrfs su cr /mnt/@snapshots
+
+$ btrfs su cr /mnt/@swap
 
 $ umount /mnt
 
-$ mkdir -p /mnt/archinstall
+$ mount -o noatime,compress-zstd,subvol=@ /dev/nvme0n1p3 /mnt
 
-$ mount -o subvol=@ /dev/nvme0n1p3 /dev/archinstall
+$ mkdir -p /mnt/{boot,home,.snapshots,.swap}
 
-$ mkdir -p /mnt/archinstall/home
+$ mount -o subvol=@home /dev/nvme0n1p3 /mnt/home
 
-$ mkdir -p /mnt/archinstall/var/cache/pacman/pkg
+$ mount -o noatime,compress=zstd,subvol=@snapshots /dev/nvme0n1p3 /mnt/archinstall/.snapshots
 
-$ mkdir -p /mnt/archinstall/var/log
+$ mount -o noatime,compress=zstd,subvol=@swap /dev/nvme0n1p3 /mnt/archinstall/.swap
 
-$ mkdir -p /mnt/archinstall/.snapshots
+$ mount /dev/nvme0n1p1 /mnt/boot
 
-$ mount -o subvol=@home /dev/nvme0n1p3 /dev/archinstall/home
+$ btrfs filesystem mkswapfile --size 30720M /mnt/.swap/swapfile
 
-$ mount -o subvol=@pkg /dev/nvme0n1p3 /dev/archinstall/var/cache/pacman/pkg
-
-$ mount -o subvol=@log /dev/nvme0n1p3 /dev/archinstall/var/log
-
-$ mount -o subvol=@snapshots /dev/nvme0n1p3 /dev/archinstall/.snapshots
-
-$ mkdir -p /mnt/archinstall/boot
-
-$ mount /dev/nvme0n1p1 /mnt/archinstall/boot
-
-$ swapon /dev/nvme0n1p2
+$ swapon /mnt/.swap/swapfile
 
 $ lsblk
 
@@ -80,7 +61,7 @@ $ archinstall
 
 $ sudo pacman -Syu
 
-$ sudo pacman -S firefox firewalld gimp git hypridle hyprlock hyprpaper neovim sbctl stow transmission-cli transmission-qt tree unzip waybar
+$ sudo pacman -S firefox firewalld gcc gimp git hypridle hyprlock hyprpaper make neovim sbctl stow transmission-cli transmission-qt tree unzip waybar
 
 $ sudo pacman -S bridge-utils dnsmasq iptables-nft qemu-base swtpm virt-manager virt-viewer
 
