@@ -1,4 +1,4 @@
-# archinstall
+# Dual boot Windows & ArchLinux
 
 $ lsblk
 
