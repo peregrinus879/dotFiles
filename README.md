@@ -34,7 +34,7 @@ $ btrfs su cr /mnt/@var_log
 
 $ umount /mnt
 
-$ mount -o noatime,compress-zstd,subvol=@ /dev/nvme0n1p2 /mnt
+$ mount -o noatime,compress=zstd,subvol=@ /dev/nvme0n1p2 /mnt
 
 $ mkdir -p /mnt/{boot,home,.snapshots,swap,var/log}
 
@@ -42,13 +42,13 @@ $ mount -o noatime,compress=zstd,subvol=@home /dev/nvme0n1p2 /mnt/home
 
 $ mount -o noatime,compress=zstd,subvol=@snapshots /dev/nvme0n1p2 /mnt/.snapshots
 
-$ mount -o noatime,nodatacow,subvol=@swap /dev/nvme0n1p2 /mnt/archinstall/swap
+$ mount -o noatime,nodatacow,subvol=@swap /dev/nvme0n1p2 /mnt/swap
 
-$ mount -o noatime,nodatacow,subvol=@var_log /dev/nvme0n1p2 /mnt/archinstall/var/log
+$ mount -o noatime,nodatacow,subvol=@var_log /dev/nvme0n1p2 /mnt/var/log
 
 $ btrfs filesystem mkswapfile --size 30720M /mnt/swap/swapfile
 
-$ swapon /mnt/.swap/swapfile
+$ swapon /mnt/swap/swapfile
 
 $ mount /dev/nvme0n1p1 /mnt/boot
 
@@ -58,7 +58,7 @@ $ archinstall
 
 $ sudo pacman -Syu
 
-$ sudo pacman -S firefox hypridle hyprlock hyprpaper waybar
+$ sudo pacman -S firefox hypridle hyprlock hyprpaper stow tree waybar
 
 $ sudo pacman -S --needed gcc make git ripgrep fd unzip neovim
 
