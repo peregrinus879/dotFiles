@@ -1,4 +1,4 @@
-# Dual boot Windows & ArchLinux
+# archinstall prep.
 
 $ lsblk
 
@@ -12,22 +12,15 @@ $  ef00
 $ n
 $  <default>
 $  <default>
-$  +1024G
-$  0700
-$ n
-$  <default>
-$  <default>
 $  <default>
 $  <default>
 $ w
 
 $ mkfs.fat -F32 -n EFI /dev/nvme0n1p1
 
-$ mkfs.ntfs -L WIN /dev/nvme0n1p2
+$ mkfs.btrfs -L GNU /dev/nvme0n1p2
 
-$ mkfs.btrfs -L ARC /dev/nvme0n1p3
-
-$ mount /dev/nvme0n1p3 /mnt
+$ mount /dev/nvme0n1p2 /mnt
 
 $ btrfs su cr /mnt/@
 
@@ -37,23 +30,27 @@ $ btrfs su cr /mnt/@snapshots
 
 $ btrfs su cr /mnt/@swap
 
+$ btrfs su cr /mnt/@var_log
+
 $ umount /mnt
 
-$ mount -o noatime,compress-zstd,subvol=@ /dev/nvme0n1p3 /mnt
+$ mount -o noatime,compress-zstd,subvol=@ /dev/nvme0n1p2 /mnt
 
-$ mkdir -p /mnt/{boot,home,.snapshots,.swap}
+$ mkdir -p /mnt/{boot,home,.snapshots,swap,var/log}
 
-$ mount -o subvol=@home /dev/nvme0n1p3 /mnt/home
+$ mount -o noatime,compress=zstd,subvol=@home /dev/nvme0n1p2 /mnt/home
 
-$ mount -o noatime,compress=zstd,subvol=@snapshots /dev/nvme0n1p3 /mnt/archinstall/.snapshots
+$ mount -o noatime,compress=zstd,subvol=@snapshots /dev/nvme0n1p2 /mnt/.snapshots
 
-$ mount -o noatime,compress=zstd,subvol=@swap /dev/nvme0n1p3 /mnt/archinstall/.swap
+$ mount -o noatime,nodatacow,subvol=@swap /dev/nvme0n1p2 /mnt/archinstall/swap
 
-$ mount /dev/nvme0n1p1 /mnt/boot
+$ mount -o noatime,nodatacow,subvol=@var_log /dev/nvme0n1p2 /mnt/archinstall/var/log
 
-$ btrfs filesystem mkswapfile --size 30720M /mnt/.swap/swapfile
+$ btrfs filesystem mkswapfile --size 30720M /mnt/swap/swapfile
 
 $ swapon /mnt/.swap/swapfile
+
+$ mount /dev/nvme0n1p1 /mnt/boot
 
 $ lsblk
 
@@ -61,16 +58,10 @@ $ archinstall
 
 $ sudo pacman -Syu
 
-$ sudo pacman -S firefox firewalld gcc gimp git hypridle hyprlock hyprpaper make neovim sbctl stow transmission-cli transmission-qt tree unzip waybar
+$ sudo pacman -S firefox hypridle hyprlock hyprpaper waybar
 
-$ sudo pacman -S bridge-utils dnsmasq iptables-nft qemu-base swtpm virt-manager virt-viewer
-
-$ sudo pacman -S --needed base-devel && git clone https://aur.archlinux.org/paru.git && cd paru && makepkg -si
-
-$ paru -Syu
-
-$ paru -S appimagelauncher brave-bin
+$ sudo pacman -S --needed gcc make git ripgrep fd unzip neovim
 
 $ git clone https://github.com/nvim-lua/kickstart.nvim.git "${XDG_CONFIG_HOME:-$HOME/.config}"/nvim
 
-$ git@github.com:peregrinus879/dotFiles.git
+$ sudo pacman -S bridge-utils dnsmasq iptables-nft qemu-base swtpm virt-manager virt-viewer

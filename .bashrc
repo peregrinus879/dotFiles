@@ -81,6 +81,6 @@ alias ll='ls -al'
 # Grepping
 alias grep='grep --color=auto'
 # Safety
-alias cp='cp -i'
-alias mv='mv -i'
-alias rm='rm -i'
+alias cp='cp -iv'
+alias mv='mv -iv'
+alias rm='rm -iv'
