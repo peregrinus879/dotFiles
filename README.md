@@ -36,7 +36,7 @@ $ umount /mnt
 
 $ mount -o noatime,compress=zstd,subvol=@ /dev/nvme0n1p2 /mnt
 
-$ mkdir -p /mnt/{boot,home,.snapshots,swap,var/log}
+$ mkdir -p /mnt/{boot/efi,home,.snapshots,swap,var/log}
 
 $ mount -o noatime,compress=zstd,subvol=@home /dev/nvme0n1p2 /mnt/home
 
@@ -50,7 +50,7 @@ $ btrfs filesystem mkswapfile --size 30720M /mnt/swap/swapfile
 
 $ swapon /mnt/swap/swapfile
 
-$ mount /dev/nvme0n1p1 /mnt/boot
+$ mount /dev/nvme0n1p1 /mnt/boot/efi
 
 $ lsblk
 
@@ -58,9 +58,9 @@ $ archinstall
 
 $ sudo pacman -Syu
 
-$ sudo pacman -S firefox hypridle hyprlock hyprpaper stow tree waybar
+$ sudo pacman -S firefox hypridle hyprlock hyprpaper neovim stow tree waybar
 
-$ sudo pacman -S --needed gcc make git ripgrep fd unzip neovim
+$ sudo pacman -S --needed gcc make git ripgrep fd unzip
 
 $ git clone https://github.com/nvim-lua/kickstart.nvim.git "${XDG_CONFIG_HOME:-$HOME/.config}"/nvim
 
