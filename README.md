@@ -17,33 +17,35 @@ $   ef00
 $  n
 $   <default>
 $   <default>
+$   +xxxxxxxM
+$   <default>
+$  n
+$   <default>
+$   <default>
 $   +1024M
 $   0c01
 $  n
 $   <default>
 $   <default>
-$   +1048576[+1024]M
+$   <default>(+1024M)[for recovery]
 $   0700
-$  n
-$   <default>
-$   <default>
-$   <default>
-$   <default>
 $  w
 
 $ mkfs.fat -F32 -n EFI /dev/nvme0n1p1
 
-S mkfs.ntfs -Q -L WIN /dev/nvme0n1p3
+$ mkfs.btrfs -f -L ARC /dev/nvme0n1p2
 
-$ mkfs.btrfs -f -L ARC /dev/nvme0n1p4
+S mkfs.ntfs -Q -L WIN /dev/nvme0n1p4
 
-$ mount /dev/nvme0n1p4 /mnt
+$ mount /dev/nvme0n1p2 /mnt
 
 $ btrfs su cr /mnt/@
 
 $ btrfs su cr /mnt/@home
 
 $ btrfs su cr /mnt/@snapshots
+
+$ btrfs su cr /mnt/@kvm
 
 $ btrfs su cr /mnt/@swap
 
@@ -53,21 +55,21 @@ $ btrfs su cr /mnt/@pkg
 
 $ umount /mnt
 
-$ mount -o noatime,compress=zstd,subvol=@ /dev/nvme0n1p4 /mnt
+$ mount -o noatime,compress=zstd,subvol=@ /dev/nvme0n1p2 /mnt
 
 $ mkdir -p /mnt/{boot,home,.snapshots,kvm,var/log,var/cache/pacman/pkg,swap}
 
-$ mount -o noatime,compress=zstd,subvol=@home /dev/nvme0n1p4 /mnt/home
+$ mount -o noatime,compress=zstd,subvol=@home /dev/nvme0n1p2 /mnt/home
 
-$ mount -o noatime,compress=zstd,subvol=@snapshots /dev/nvme0n1p4 /mnt/.snapshots
+$ mount -o noatime,compress=zstd,subvol=@snapshots /dev/nvme0n1p2 /mnt/.snapshots
 
-$ mount -o noatime,compress=zstd,subvol=@kvm /dev/nvme0n1p4 /mnt/kvm
+$ mount -o noatime,compress=zstd,subvol=@kvm /dev/nvme0n1p2 /mnt/kvm
 
-$ mount -o noatime,nodatacow,subvol=@log /dev/nvme0n1p4 /mnt/var/log
+$ mount -o noatime,nodatacow,subvol=@log /dev/nvme0n1p2 /mnt/var/log
 
-$ mount -o noatime,nodatacow,subvol=@pkg /dev/nvme0n1p4 /mnt/var/cache/pacman/pkg
+$ mount -o noatime,nodatacow,subvol=@pkg /dev/nvme0n1p2 /mnt/var/cache/pacman/pkg
 
-$ mount -o noatime,nodatacow,subvol=@swap /dev/nvme0n1p4 /mnt/swap
+$ mount -o noatime,nodatacow,subvol=@swap /dev/nvme0n1p2 /mnt/swap
 
 $ btrfs filesystem mkswapfile --size 32768M /mnt/swap/swapfile
 
