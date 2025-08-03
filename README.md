@@ -91,11 +91,11 @@ $ ssh-add ~/.ssh/id_ed25519
 
 $ cat ~/.ssh/id_ed25419.pub
 
-# ssh -T git@github.com
+$ ssh -T git@github.com
 
 $ git config --global user.email "<e@mail.com>"
 
-$ git config --global user.name "<username>"
+$ git config --global user.name "<name>"
 
 $ git config --global url."git@github.com:".insteadof "https://github.com/"
 
