@@ -97,9 +97,9 @@ $ git config --global user.email "<e@mail.com>"
 
 $ git config --global user.name "<username>"
 
-$ git config --global url."git@github.com:".insteadof "https://github.com/"
-
 $ cd <folder>
+
+$ git config url."git@github.com:".insteadof "https://github.com/"
 
 $ git branch -M main
 
