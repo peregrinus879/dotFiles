@@ -95,7 +95,7 @@ $ ssh -T git@github.com
 
 $ git config --global user.email "<e@mail.com>"
 
-$ git config --global user.name "<name>"
+$ git config --global user.name "<user.name>"
 
 $ git config --global url."git@github.com:".insteadof "https://github.com/"
 
