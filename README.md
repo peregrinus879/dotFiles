@@ -95,6 +95,10 @@ $ ssh -T git@github.com
 
 $ cd dotFiles
 
+$ git config user.email "user.email"
+
+$ git config user.name "user.name"
+
 $ git add .
 
 $ git commit -m "<yyyymmddhhmm>"
