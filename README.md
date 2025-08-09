@@ -47,9 +47,9 @@ $  w
 
 $ mkfs.fat -F32 -n EFI /dev/nvme0n1p1
 
-S mkfs.ntfs -Q -L WIN /dev/nvme0n1p4
+S mkfs.ntfs -L WIN /dev/nvme0n1p3
 
-$ mkfs.btrfs -L ARC -d raid0 -m raid1 /dev/nvme1n1p1 /dev/nvme2n1p1
+$ mkfs.btrfs -f -L ARC -d raid0 -m raid1 /dev/nvme1n1p1 /dev/nvme2n1p1
 
 $ mount LABEL=ARC /mnt
 
@@ -93,19 +93,11 @@ $ cat ~/.ssh/id_ed25419.pub
 
 $ ssh -T git@github.com
 
-$ git config --global user.email "<e@mail.com>"
-
-$ git config --global user.name "<username>"
-
-$ cd <folder>
-
-$ git config url."git@github.com:".insteadof "https://github.com/"
-
-$ git branch -M main
+$ cd dotFiles
 
 $ git add .
 
-$ git commit -m "<message>"
+$ git commit -m "<yyyymmddhhmm>"
 
 $ git push orign main
 
